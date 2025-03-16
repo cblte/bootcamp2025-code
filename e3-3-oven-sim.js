@@ -232,7 +232,7 @@ class Oven {
 
       // Mock setTimeout
       const originalSetTimeout = setTimeout;
-      global.setTimeout = function (callback) {
+      globalThis.setTimeout = function (callback) {
         callback();
       };
 
@@ -249,7 +249,7 @@ class Oven {
         throw new Error("Failed during full cycle test: " + e);
       } finally {
         // Restore original setTimeout
-        global.setTimeout = originalSetTimeout;
+        globalThis.setTimeout = originalSetTimeout;
       }
     });
 
