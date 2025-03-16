@@ -5,7 +5,6 @@
  * manually stop cooking by pressing a button, and open the oven and remove
  * the food.
  */
-
 class Oven {
   constructor() {
     this.doorOpen = false;
