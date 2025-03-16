@@ -5,9 +5,11 @@
 // the food.
 
 class Oven {
-  doorOpen = false;
-  foodInside = false;
-  started = false;
+  constructor() {
+    this.doorOpen = false;
+    this.foodInside = false;
+    this.started = false;
+  }
 
   openDoor() {
     this.doorOpen = true;
@@ -18,17 +20,33 @@ class Oven {
   }
 
   putFood() {
-    if (this.doorOpen) {
+    if (this.started) {
+      throw "Cannot put food inside, when oven is started.";
+    }
+    if (this.doorOpen && !this.foodInside) {
       this.foodInside = true;
     } else {
-      throw "Cannot put food inside, when door is not open.";
+      throw "Cannot put food inside, when door is not open or food is already inside.";
     }
   }
 
-  removeFood() {}
+  removeFood() {
+    if (this.started) {
+      throw "Cannot remove food, when oven is started.";
+    }
+    if (this.started && this.doorOpen && this.foodInside) {
+      this.foodInside = false;
+    } else {
+      throw "Cannot remove food, when door is not open or food is not inside.";
+    }
+  }
 
   start() {
-    this.started = true;
+    if (!this.doorOpen && this.foodInside) {
+      this.started = true;
+    } else {
+      throw "Cannot start oven when door is open or no food inside.";
+    }
   }
 
   stop() {
@@ -39,9 +57,26 @@ class Oven {
    * @param {number} duration - The cooking duration in seconds.
    */
   startCooking(duration) {
-    this.started = true;
-    setTimeout(() => {
-      this.started = false;
-    }, duration * 1000);
+    if (!this.doorOpen && this.foodInside) {
+      this.started = true;
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          this.started = false;
+          resolve();
+        }, duration * 1000);
+      });
+    } else {
+      throw "Cannot start cooking when door is open or no food inside.";
+    }
   }
 }
+
+const oven = new Oven();
+
+oven.openDoor();
+console.log("Door Open? :" + oven.doorOpen);
+
+oven.putFood();
+oven.startCooking(5);
+console.log("Cooking started?: " + oven.started);
+oven.removeFood();
