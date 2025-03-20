@@ -1,1 +1,5 @@
-Hello from example.txt
+Hello from example.txt.
+This is a sample text file. It contains some lorem ipsum text.
+
+Do we have more to show?
+Yes, we do!
